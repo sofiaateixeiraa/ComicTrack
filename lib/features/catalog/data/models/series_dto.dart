@@ -25,6 +25,8 @@ class SeriesDto {
   factory SeriesDto.fromJson(Map<String, dynamic> json) =>
       _$SeriesDtoFromJson(json);
 
+  Map<String, dynamic> toJson() => _$SeriesDtoToJson(this);
+
   Series toDomain() => Series(
     id: id.toString(),
     title: name,
@@ -42,4 +44,6 @@ class PublisherRefDto {
   const PublisherRefDto({required this.id, required this.name});
   factory PublisherRefDto.fromJson(Map<String, dynamic> json) =>
       _$PublisherRefDtoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PublisherRefDtoToJson(this);
 }

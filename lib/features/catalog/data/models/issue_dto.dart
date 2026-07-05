@@ -26,6 +26,8 @@ class IssueDto {
   factory IssueDto.fromJson(Map<String, dynamic> json) =>
       _$IssueDtoFromJson(json);
 
+  Map<String, dynamic> toJson() => _$IssueDtoToJson(this);
+
   Issue toDomain() => Issue(
     id: id.toString(),
     seriesId: series.id.toString(),
@@ -45,6 +47,8 @@ class SeriesRefDto {
   const SeriesRefDto({required this.id, required this.name});
   factory SeriesRefDto.fromJson(Map<String, dynamic> json) =>
       _$SeriesRefDtoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SeriesRefDtoToJson(this);
 }
 
 @JsonSerializable()
@@ -53,6 +57,8 @@ class CreditDto {
   const CreditDto({required this.creator});
   factory CreditDto.fromJson(Map<String, dynamic> json) =>
       _$CreditDtoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$CreditDtoToJson(this);
 }
 
 @JsonSerializable()
@@ -62,4 +68,6 @@ class CreatorRefDto {
   const CreatorRefDto({required this.id, required this.name});
   factory CreatorRefDto.fromJson(Map<String, dynamic> json) =>
       _$CreatorRefDtoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$CreatorRefDtoToJson(this);
 }

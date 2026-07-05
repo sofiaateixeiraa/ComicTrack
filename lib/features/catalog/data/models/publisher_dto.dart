@@ -12,5 +12,7 @@ class PublisherDto {
   factory PublisherDto.fromJson(Map<String, dynamic> json) =>
       _$PublisherDtoFromJson(json);
 
+  Map<String, dynamic> toJson() => _$PublisherDtoToJson(this);
+
   Publisher toDomain() => Publisher(id: id.toString(), name: name);
 }
