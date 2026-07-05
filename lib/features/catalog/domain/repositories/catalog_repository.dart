@@ -13,7 +13,9 @@ abstract interface class CatalogRepository {
   /// [nextUrl]: URL completa de paginação devolvida pela API; se null, primeira página.
   Future<Either<Failure, PaginatedResult<Series>>> getSeriesByPublisher(
     String publisherId, {
+    String? publisherName,
     String? nameFilter,
+    String sort = 'name',
     String? nextUrl,
   });
 

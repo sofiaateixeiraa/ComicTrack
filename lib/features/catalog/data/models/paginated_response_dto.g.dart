@@ -15,13 +15,3 @@ PaginatedResponseDto<T> _$PaginatedResponseDtoFromJson<T>(
   previous: json['previous'] as String?,
   results: (json['results'] as List<dynamic>).map(fromJsonT).toList(),
 );
-
-Map<String, dynamic> _$PaginatedResponseDtoToJson<T>(
-  PaginatedResponseDto<T> instance,
-  Object? Function(T value) toJsonT,
-) => <String, dynamic>{
-  'count': instance.count,
-  'next': instance.next,
-  'previous': instance.previous,
-  'results': instance.results.map(toJsonT).toList(),
-};

@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'paginated_response_dto.g.dart';
 
 /// estrutura de paginação da API Metron: {"count": N, "next": "url|null", "previous": "url|null", "results": [...]}.
-@JsonSerializable(genericArgumentFactories: true)
+@JsonSerializable(createToJson: false, genericArgumentFactories: true)
 class PaginatedResponseDto<T> {
   final int count;
   final String? next;

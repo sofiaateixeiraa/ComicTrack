@@ -9,6 +9,7 @@ part of 'issue_dto.dart';
 IssueDto _$IssueDtoFromJson(Map<String, dynamic> json) => IssueDto(
   id: (json['id'] as num).toInt(),
   number: json['number'] as String,
+  title: json['title'] as String?,
   coverDate: json['cover_date'] as String?,
   image: json['image'] as String?,
   desc: json['desc'] as String?,
@@ -21,6 +22,7 @@ IssueDto _$IssueDtoFromJson(Map<String, dynamic> json) => IssueDto(
 Map<String, dynamic> _$IssueDtoToJson(IssueDto instance) => <String, dynamic>{
   'id': instance.id,
   'number': instance.number,
+  'title': instance.title,
   'cover_date': instance.coverDate,
   'image': instance.image,
   'desc': instance.desc,
@@ -35,18 +37,16 @@ Map<String, dynamic> _$SeriesRefDtoToJson(SeriesRefDto instance) =>
     <String, dynamic>{'id': instance.id, 'name': instance.name};
 
 CreditDto _$CreditDtoFromJson(Map<String, dynamic> json) => CreditDto(
-  creator: CreatorRefDto.fromJson(json['creator'] as Map<String, dynamic>),
+  creator: json['creator'] as String,
+  role: (json['role'] as List<dynamic>?)
+      ?.map((e) => RoleDto.fromJson(e as Map<String, dynamic>))
+      .toList(),
 );
 
 Map<String, dynamic> _$CreditDtoToJson(CreditDto instance) => <String, dynamic>{
   'creator': instance.creator,
+  'role': instance.role,
 };
 
-CreatorRefDto _$CreatorRefDtoFromJson(Map<String, dynamic> json) =>
-    CreatorRefDto(
-      id: (json['id'] as num).toInt(),
-      name: json['name'] as String,
-    );
-
-Map<String, dynamic> _$CreatorRefDtoToJson(CreatorRefDto instance) =>
-    <String, dynamic>{'id': instance.id, 'name': instance.name};
+RoleDto _$RoleDtoFromJson(Map<String, dynamic> json) =>
+    RoleDto(id: (json['id'] as num).toInt(), name: json['name'] as String);

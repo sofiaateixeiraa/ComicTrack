@@ -15,7 +15,9 @@ abstract interface class MetronRemoteDataSource {
   Future<Either<Failure, List<Publisher>>> getPublishers();
   Future<Either<Failure, PaginatedResult<Series>>> getSeriesByPublisher(
     String publisherId, {
+    String? publisherName,
     String? nameFilter,
+    String sort = 'name',
     String? nextUrl,
   });
   Future<Either<Failure, PaginatedResult<Series>>> searchSeries(
@@ -46,21 +48,19 @@ class MetronRemoteDataSourceImpl implements MetronRemoteDataSource {
     }
 
     try {
-      // metron devolve todos os publishers numa só página.
       final publishers = <Publisher>[];
-      String? nextUrl = 'publisher/';
-
-      while (nextUrl != null) {
-        final response = await _dio.get(nextUrl);
+      String? url = 'publisher/';
+      Map<String, dynamic>? query = const {};
+      while (url != null) {
+        final response = await _dio.get(url, queryParameters: query);
         final dto = PaginatedResponseDto<PublisherDto>.fromJson(
           response.data as Map<String, dynamic>,
           (j) => PublisherDto.fromJson(j as Map<String, dynamic>),
         );
-
         publishers.addAll(dto.results.map((e) => e.toDomain()));
-        nextUrl = dto.next;
+        url = dto.next;
+        query = null;
       }
-
       _cache.set(cacheKey, publishers);
       return Right(publishers);
     } on DioException catch (e) {
@@ -73,7 +73,9 @@ class MetronRemoteDataSourceImpl implements MetronRemoteDataSource {
   @override
   Future<Either<Failure, PaginatedResult<Series>>> getSeriesByPublisher(
     String publisherId, {
+    String? publisherName,
     String? nameFilter,
+    String sort = 'name',
     String? nextUrl,
   }) async {
     try {
@@ -81,18 +83,19 @@ class MetronRemoteDataSourceImpl implements MetronRemoteDataSource {
       if (nextUrl != null) {
         // usa a url completa de paginação.
         response = await _dio.get(nextUrl);
-      } else if (nameFilter == null || nameFilter.isEmpty) {
-        response = await _dio.get('publisher/$publisherId/series_list/');
       } else {
         response = await _dio.get(
           'series/',
           queryParameters: {
             'publisher_id': publisherId,
-            'name': nameFilter,
+            if (nameFilter != null && nameFilter.isNotEmpty) 'name': nameFilter,
+            'ordering': sort,
           },
         );
       }
-      return Right(_parsePaginatedSeries(response));
+      return Right(
+        _parsePaginatedSeries(response, publisherName: publisherName),
+      );
     } on DioException catch (e) {
       return Left(_handleDioError(e));
     } catch (e) {
@@ -112,7 +115,8 @@ class MetronRemoteDataSourceImpl implements MetronRemoteDataSource {
       } else {
         response = await _dio.get('series/', queryParameters: {'name': query});
       }
-      return Right(_parsePaginatedSeries(response));
+      // pesquisa global: não há editora de contexto, fica 'desconhecida'.
+      return Right(_parsePaginatedSeries(response, publisherName: null));
     } on DioException catch (e) {
       return Left(_handleDioError(e));
     } catch (e) {
@@ -148,7 +152,10 @@ class MetronRemoteDataSourceImpl implements MetronRemoteDataSource {
     try {
       final response = nextUrl != null
           ? await _dio.get(nextUrl)
-          : await _dio.get('series/$seriesId/issue_list/');
+          : await _dio.get(
+              'issue/',
+              queryParameters: {'series_id': seriesId, 'ordering': 'number'},
+            );
       final dto = PaginatedResponseDto<IssueDto>.fromJson(
         response.data as Map<String, dynamic>,
         (j) => IssueDto.fromJson(j as Map<String, dynamic>),
@@ -188,13 +195,18 @@ class MetronRemoteDataSourceImpl implements MetronRemoteDataSource {
     }
   }
 
-  PaginatedResult<Series> _parsePaginatedSeries(Response response) {
-    final dto = PaginatedResponseDto<SeriesDto>.fromJson(
+  PaginatedResult<Series> _parsePaginatedSeries(
+    Response response, {
+    String? publisherName,
+  }) {
+    final dto = PaginatedResponseDto<SeriesListItemDto>.fromJson(
       response.data as Map<String, dynamic>,
-      (j) => SeriesDto.fromJson(j as Map<String, dynamic>),
+      (j) => SeriesListItemDto.fromJson(j as Map<String, dynamic>),
     );
     return PaginatedResult<Series>(
-      items: dto.results.map((e) => e.toDomain()).toList(),
+      items: dto.results
+          .map((e) => e.toDomain(publisherName: publisherName))
+          .toList(),
       total: dto.count,
       nextUrl: dto.next,
       previousUrl: dto.previous,
@@ -212,7 +224,7 @@ class MetronRemoteDataSourceImpl implements MetronRemoteDataSource {
         e.type == DioExceptionType.receiveTimeout ||
         e.type == DioExceptionType.connectionError) {
       return Failure.network(
-        message: 'Sem ligação à internet. Verifica a tua conexão.',
+        message: 'Sem ligação à internet. Verifique a sua conexão.',
       );
     }
     return Failure.network(message: e.message ?? 'Erro de rede desconhecido.');
