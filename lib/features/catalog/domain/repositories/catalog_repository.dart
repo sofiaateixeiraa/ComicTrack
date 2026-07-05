@@ -9,13 +9,11 @@ abstract interface class CatalogRepository {
   /// devolve lista de editoras disponíveis na API Metron.
   Future<Either<Failure, List<Publisher>>> getPublishers();
 
-  /// lista séries de uma editora, com suporte a pesquisa e ordenação.
-  /// [sort]: 'name' (A-Z) | '-year_began' (mais recente).
+  /// lista séries de uma editora, com suporte a pesquisa.
   /// [nextUrl]: URL completa de paginação devolvida pela API; se null, primeira página.
   Future<Either<Failure, PaginatedResult<Series>>> getSeriesByPublisher(
     String publisherId, {
     String? nameFilter,
-    String sort = 'name',
     String? nextUrl,
   });
 

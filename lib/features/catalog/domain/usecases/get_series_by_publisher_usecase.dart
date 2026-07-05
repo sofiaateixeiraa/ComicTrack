@@ -10,12 +10,10 @@ class GetSeriesByPublisherUseCase {
   Future<Either<Failure, PaginatedResult<Series>>> call({
     required String publisherId,
     String? nameFilter,
-    String sort = 'name',
     String? nextUrl,
   }) => _repository.getSeriesByPublisher(
     publisherId,
     nameFilter: nameFilter,
-    sort: sort,
     nextUrl: nextUrl,
   );
 }
