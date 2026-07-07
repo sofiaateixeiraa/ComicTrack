@@ -1,0 +1,1 @@
+{"flutter":{"platforms":{"android":{"default":{"projectId":"ds-comictrack","appId":"1:160246021511:android:67dd9a7d29cc78a948e722","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"ds-comictrack","configurations":{"android":"1:160246021511:android:67dd9a7d29cc78a948e722","ios":"1:160246021511:ios:909f5e340547eae448e722"}}}}}}
