@@ -27,7 +27,7 @@ class SeriesDetailScreen extends ConsumerWidget {
         title: seriesAsync.when(
           data: (series) => Text(series.title.toUpperCase()),
           loading: () => const Text(''),
-          error: (_, __) => const Text(''),
+          error: (_, _) => const Text(''),
         ),
       ),
       body: issuesAsync.when(
@@ -49,7 +49,7 @@ class SeriesDetailScreen extends ConsumerWidget {
           },
         ),
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (_, __) => const Center(child: Text('Erro ao carregar issues.', style: TextStyle(color: Colors.white54))),
+        error: (_, _) => const Center(child: Text('Erro ao carregar issues.', style: TextStyle(color: Colors.white54))),
       ),
     );
   }

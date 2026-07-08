@@ -103,7 +103,7 @@ class _PublisherSeriesScreenState extends ConsumerState<PublisherSeriesScreen> {
                 },
               ),
               loading: () => const Center(child: CircularProgressIndicator()),
-              error: (_, __) => const Center(child: Text('Erro ao carregar séries.', style: TextStyle(color: Colors.white54))),
+              error: (_, _) => const Center(child: Text('Erro ao carregar séries.', style: TextStyle(color: Colors.white54))),
             ),
           ),
         ],

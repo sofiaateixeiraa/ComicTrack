@@ -29,7 +29,7 @@ class IssueDetailScreen extends ConsumerWidget {
       body: issueAsync.when(
         data: (issue) => _buildBody(context, ref, issue, entryAsync),
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, __) => const Center(
+        error: (e, _) => const Center(
           child: Text('Não foi possível carregar os dados deste issue.',
               style: TextStyle(color: Colors.white54)),
         ),
@@ -38,7 +38,7 @@ class IssueDetailScreen extends ConsumerWidget {
   }
 
   Widget _buildBody(BuildContext context, WidgetRef ref, Issue issue, AsyncValue entryAsync) {
-    final entry = entryAsync.valueOrNull;
+    final entry = entryAsync.asData?.value;
     final ownership = entry?.ownershipStatus ?? OwnershipStatus.none;
     final reading = entry?.readingStatus;
     final isFav = entry?.isFavorite ?? false;
@@ -238,16 +238,28 @@ class _OwnershipDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     // Se não está na coleção: mostrar "Não está na coleção" + as 3 opções
     // Se já está: não mostrar "Não está na coleção" (apenas as 3)
-    final items = [
+    final items = <DropdownMenuItem<OwnershipStatus>>[
       if (!isInCollection)
-        const DropdownMenuItem(value: OwnershipStatus.none, child: Text('Não está na coleção')),
-      const DropdownMenuItem(value: OwnershipStatus.wishlist, child: Text('Wishlist')),
-      const DropdownMenuItem(value: OwnershipStatus.online, child: Text('Online')),
-      const DropdownMenuItem(value: OwnershipStatus.physical, child: Text('Físico')),
+        const DropdownMenuItem<OwnershipStatus>(
+          value: OwnershipStatus.none,
+          child: Text('Não está na coleção'),
+        ),
+      const DropdownMenuItem<OwnershipStatus>(
+        value: OwnershipStatus.wishlist,
+        child: Text('Wishlist'),
+      ),
+      const DropdownMenuItem<OwnershipStatus>(
+        value: OwnershipStatus.online,
+        child: Text('Online'),
+      ),
+      const DropdownMenuItem<OwnershipStatus>(
+        value: OwnershipStatus.physical,
+        child: Text('Físico'),
+      ),
     ];
 
     return DropdownButtonFormField<OwnershipStatus>(
-      value: current,
+      initialValue: current,
       items: items,
       onChanged: (v) { if (v != null) onChanged(v); },
       dropdownColor: const Color(0xFF2A2A2A),
@@ -266,11 +278,20 @@ class _ReadingDropdown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<ReadingStatus>(
-      value: current,
+      initialValue: current,
       items: const [
-        DropdownMenuItem(value: ReadingStatus.wantToRead, child: Text('Quero ler')),
-        DropdownMenuItem(value: ReadingStatus.reading, child: Text('A ler')),
-        DropdownMenuItem(value: ReadingStatus.read, child: Text('Lido')),
+        DropdownMenuItem<ReadingStatus>(
+          value: ReadingStatus.wantToRead,
+          child: Text('Quero ler'),
+        ),
+        DropdownMenuItem<ReadingStatus>(
+          value: ReadingStatus.reading,
+          child: Text('A ler'),
+        ),
+        DropdownMenuItem<ReadingStatus>(
+          value: ReadingStatus.read,
+          child: Text('Lido'),
+        ),
       ],
       onChanged: (v) { if (v != null) onChanged(v); },
       dropdownColor: const Color(0xFF2A2A2A),

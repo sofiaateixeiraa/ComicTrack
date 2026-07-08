@@ -1,7 +1,6 @@
 
 import 'package:flutter/material.dart';
 import '../../domain/entities/reading_status.dart';
-import '../../domain/entities/ownership_status.dart';
 
 class ReadingFilterChips extends StatelessWidget {
   final ReadingStatus? selected; // null = "Todos"

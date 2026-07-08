@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../auth/presentation/providers/auth_providers.dart';
 import '../../domain/entities/comic_collection_entry.dart';
 import '../../domain/entities/ownership_status.dart';
 import '../../domain/entities/reading_status.dart';
@@ -53,7 +52,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   (entries) => _buildSections(entries),
                 ),
                 loading: () => const Center(child: CircularProgressIndicator()),
-                error: (_, __) => const _ErrorWidget(),
+                error: (_, _) => const _ErrorWidget(),
               ),
             ),
           ],
@@ -316,7 +315,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 16),
         itemCount: show.length + (hasMore ? 1 : 0),
-        separatorBuilder: (_, __) => const SizedBox(width: 12),
+        separatorBuilder: (_, _) => const SizedBox(width: 12),
         itemBuilder: (context, i) {
           if (hasMore && i == show.length) {
             // Seta de "ver tudo" no fim do carrossel

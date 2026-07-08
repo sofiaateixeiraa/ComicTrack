@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../../../core/error/failures.dart';
 import '../providers/auth_providers.dart';
 
 class AuthScreen extends ConsumerStatefulWidget {
@@ -152,7 +152,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> with SingleTickerProvid
               // Botão submit
               AnimatedBuilder(
                 animation: _tab,
-                builder: (_, __) => ElevatedButton(
+                builder: (_, _) => ElevatedButton(
                   onPressed: _loading ? null : _submit,
                   child: _loading
                       ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))

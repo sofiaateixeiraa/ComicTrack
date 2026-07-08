@@ -80,7 +80,7 @@ class _FullListScreenState extends ConsumerState<FullListScreen> {
                 (entries) => _buildList(_filterEntries(entries)),
               ),
               loading: () => const Center(child: CircularProgressIndicator()),
-              error: (_, __) => const Center(child: Text('Erro.', style: TextStyle(color: Colors.white54))),
+              error: (_, _) => const Center(child: Text('Erro.', style: TextStyle(color: Colors.white54))),
             ),
           ),
         ],

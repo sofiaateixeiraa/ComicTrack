@@ -1,7 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../features/auth/presentation/providers/auth_providers.dart';
 import '../features/auth/presentation/screens/auth_screen.dart';
 import '../features/auth/presentation/screens/profile_screen.dart';
@@ -20,7 +18,7 @@ GoRouter router(Ref ref) {
   return GoRouter(
     initialLocation: '/auth',
     redirect: (context, state) {
-      final isLoggedIn = authState.valueOrNull != null;
+      final isLoggedIn = authState.asData?.value != null;
       final onAuth = state.matchedLocation == '/auth';
 
       if (!isLoggedIn && !onAuth) return '/auth';
@@ -28,9 +26,9 @@ GoRouter router(Ref ref) {
       return null;
     },
     routes: [
-      GoRoute(path: '/auth', builder: (_, __) => const AuthScreen()),
-      GoRoute(path: '/home', builder: (_, __) => const HomeScreen()),
-      GoRoute(path: '/search', builder: (_, __) => const SearchScreen()),
+      GoRoute(path: '/auth', builder: (_, _) => const AuthScreen()),
+      GoRoute(path: '/home', builder: (_, _) => const HomeScreen()),
+      GoRoute(path: '/search', builder: (_, _) => const SearchScreen()),
       GoRoute(
         path: '/publisher/:id',
         builder: (_, state) => PublisherSeriesScreen(
@@ -46,7 +44,7 @@ GoRouter router(Ref ref) {
         path: '/issue/:id',
         builder: (_, state) => IssueDetailScreen(issueId: state.pathParameters['id']!),
       ),
-      GoRoute(path: '/profile', builder: (_, __) => const ProfileScreen()),
+      GoRoute(path: '/profile', builder: (_, _) => const ProfileScreen()),
       GoRoute(
         path: '/list/:type',
         builder: (_, state) => FullListScreen(type: state.pathParameters['type']!),

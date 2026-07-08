@@ -68,7 +68,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
         },
       ),
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (_, __) => const Center(child: Text('Erro ao carregar editoras.', style: TextStyle(color: Colors.white54))),
+      error: (_, _) => const Center(child: Text('Erro ao carregar editoras.', style: TextStyle(color: Colors.white54))),
     );
   }
 
@@ -104,7 +104,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
         );
       },
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (_, __) => const Center(child: Text('Erro na pesquisa.', style: TextStyle(color: Colors.white54))),
+      error: (_, _) => const Center(child: Text('Erro na pesquisa.', style: TextStyle(color: Colors.white54))),
     );
   }
 }
