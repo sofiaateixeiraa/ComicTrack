@@ -65,11 +65,13 @@ class CreditDto {
   Map<String, dynamic> toJson() => _$CreditDtoToJson(this);
 }
 
-@JsonSerializable(createToJson: false)
+@JsonSerializable()
 class RoleDto {
   final int id;
   final String name;
   const RoleDto({required this.id, required this.name});
   factory RoleDto.fromJson(Map<String, dynamic> json) =>
       _$RoleDtoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$RoleDtoToJson(this);
 }
