@@ -18,4 +18,4 @@ Stream<AppUser?> authState(Ref ref) =>
 /// Utilizador atual de forma síncrona (pode ser null).
 @riverpod
 AppUser? currentUser(Ref ref) =>
-    ref.watch(authStateProvider).valueOrNull;
+    ref.watch(authStateProvider).asData?.value;
