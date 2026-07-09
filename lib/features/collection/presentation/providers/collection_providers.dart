@@ -1,4 +1,3 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:fpdart/fpdart.dart';
 import '../../../../core/error/failures.dart';
@@ -6,8 +5,6 @@ import '../../../auth/presentation/providers/auth_providers.dart';
 import '../../data/datasources/firestore_datasource.dart';
 import '../../data/repositories/collection_repository_impl.dart';
 import '../../domain/entities/comic_collection_entry.dart';
-import '../../domain/entities/ownership_status.dart';
-import '../../domain/entities/reading_status.dart';
 import '../../domain/repositories/collection_repository.dart';
 import '../../domain/usecases/update_ownership_status_usecase.dart';
 import '../../domain/usecases/update_reading_status_usecase.dart';
