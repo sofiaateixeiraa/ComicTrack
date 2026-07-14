@@ -16,17 +16,20 @@ class AppTheme {
       onPrimary: Colors.white,
       onSurface: Colors.white,
       error: Colors.redAccent,
+      surfaceTint: Colors.transparent,
     ),
     textTheme: GoogleFonts.nunitoTextTheme(ThemeData.dark().textTheme),
     appBarTheme: const AppBarTheme(
       backgroundColor: _bg,
       elevation: 0,
       foregroundColor: Colors.white,
+      surfaceTintColor: Colors.transparent,
     ),
     cardTheme: const CardThemeData(
       color: _card,
       elevation: 0,
       margin: EdgeInsets.zero,
+      surfaceTintColor: Colors.transparent,
     ),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
@@ -58,7 +61,7 @@ class AppTheme {
   );
 }
 
-/// Extensão de tema para cores customizadas.
+/// extensão de tema para cores customizadas.
 @immutable
 class ComicTrackColors extends ThemeExtension<ComicTrackColors> {
   final Color card;
