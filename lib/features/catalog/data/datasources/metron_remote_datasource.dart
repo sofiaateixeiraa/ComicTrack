@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../core/error/failures.dart';
 import '../../../../core/network/metron_client.dart';
 import '../models/series_dto.dart';
@@ -40,11 +42,28 @@ class MetronRemoteDataSourceImpl implements MetronRemoteDataSource {
     : _dio = dio,
       _cache = cache;
 
+  static const _publishersPrefsKey = 'cached_publishers_v1';
+
   @override
   Future<Either<Failure, List<Publisher>>> getPublishers() async {
     const cacheKey = 'publishers';
     if (_cache.has(cacheKey)) {
       return Right(_cache.get<List<Publisher>>(cacheKey)!);
+    }
+
+    final prefs = await SharedPreferences.getInstance();
+    final stored = prefs.getString(_publishersPrefsKey);
+    if (stored != null) {
+      try {
+        final publishers = (jsonDecode(stored) as List)
+            .map(
+              (e) =>
+                  Publisher(id: e['id'] as String, name: e['name'] as String),
+            )
+            .toList();
+        _cache.set(cacheKey, publishers);
+        return Right(publishers);
+      } catch (_) {}
     }
 
     try {
@@ -62,6 +81,12 @@ class MetronRemoteDataSourceImpl implements MetronRemoteDataSource {
         query = null;
       }
       _cache.set(cacheKey, publishers);
+      await prefs.setString(
+        _publishersPrefsKey,
+        jsonEncode(
+          publishers.map((p) => {'id': p.id, 'name': p.name}).toList(),
+        ),
+      );
       return Right(publishers);
     } on DioException catch (e) {
       return Left(_handleDioError(e));
@@ -115,7 +140,7 @@ class MetronRemoteDataSourceImpl implements MetronRemoteDataSource {
       } else {
         response = await _dio.get('series/', queryParameters: {'name': query});
       }
-      // pesquisa global: não há editora de contexto, fica 'desconhecida'.
+      // na pesquisa global não há editora de contexto, fica 'desconhecida'.
       return Right(_parsePaginatedSeries(response, publisherName: null));
     } on DioException catch (e) {
       return Left(_handleDioError(e));
