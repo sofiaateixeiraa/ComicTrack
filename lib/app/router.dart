@@ -2,7 +2,11 @@ import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../features/auth/presentation/providers/auth_providers.dart';
 import '../features/auth/presentation/screens/auth_screen.dart';
+import '../features/auth/presentation/screens/change_email_screen.dart';
+import '../features/auth/presentation/screens/change_password_screen.dart';
+import '../features/auth/presentation/screens/edit_profile_screen.dart';
 import '../features/auth/presentation/screens/profile_screen.dart';
+import '../features/auth/presentation/screens/verify_email_screen.dart';
 import '../features/catalog/presentation/screens/issue_detail_screen.dart';
 import '../features/catalog/presentation/screens/publisher_series_screen.dart';
 import '../features/catalog/presentation/screens/series_detail_screen.dart';
@@ -18,15 +22,26 @@ GoRouter router(Ref ref) {
   return GoRouter(
     initialLocation: '/auth',
     redirect: (context, state) {
-      final isLoggedIn = authState.asData?.value != null;
+      final user = authState.asData?.value;
+      final isLoggedIn = user != null;
       final onAuth = state.matchedLocation == '/auth';
+      final onVerifyEmail = state.matchedLocation == '/verify-email';
+      // só contas com password precisam de confirmar o email.
+      final needsVerification =
+          isLoggedIn && user.hasPasswordProvider && !user.emailVerified;
 
       if (!isLoggedIn && !onAuth) return '/auth';
-      if (isLoggedIn && onAuth) return '/home';
+      if (isLoggedIn && onAuth) return needsVerification ? '/verify-email' : '/home';
+      if (needsVerification && !onVerifyEmail) return '/verify-email';
+      if (!needsVerification && onVerifyEmail) return '/home';
       return null;
     },
     routes: [
       GoRoute(path: '/auth', builder: (_, _) => const AuthScreen()),
+      GoRoute(
+        path: '/verify-email',
+        builder: (_, _) => const VerifyEmailScreen(),
+      ),
       GoRoute(path: '/home', builder: (_, _) => const HomeScreen()),
       GoRoute(path: '/search', builder: (_, _) => const SearchScreen()),
       GoRoute(
@@ -36,18 +51,34 @@ GoRouter router(Ref ref) {
           publisherName: state.uri.queryParameters['name'] ?? '',
         ),
       ),
-      GoRoute(   // mostra a lista de issues da série
+      GoRoute(
+        // lista de issues da serie.
         path: '/series/:id',
-        builder: (_, state) => SeriesDetailScreen(seriesId: state.pathParameters['id']!),
+        builder: (_, state) =>
+            SeriesDetailScreen(seriesId: state.pathParameters['id']!),
       ),
-      GoRoute(   // é aqui que se faz o tracking (posse / leitura / favorito)
+      GoRoute(
         path: '/issue/:id',
-        builder: (_, state) => IssueDetailScreen(issueId: state.pathParameters['id']!),
+        builder: (_, state) =>
+            IssueDetailScreen(issueId: state.pathParameters['id']!),
       ),
       GoRoute(path: '/profile', builder: (_, _) => const ProfileScreen()),
       GoRoute(
+        path: '/profile/edit',
+        builder: (_, _) => const EditProfileScreen(),
+      ),
+      GoRoute(
+        path: '/profile/change-email',
+        builder: (_, _) => const ChangeEmailScreen(),
+      ),
+      GoRoute(
+        path: '/profile/change-password',
+        builder: (_, _) => const ChangePasswordScreen(),
+      ),
+      GoRoute(
         path: '/list/:type',
-        builder: (_, state) => FullListScreen(type: state.pathParameters['type']!),
+        builder: (_, state) =>
+            FullListScreen(type: state.pathParameters['type']!),
       ),
     ],
   );
