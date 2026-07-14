@@ -1,6 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Câmara: captura de foto de perfil -->
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <!-- Galeria: Android 13+ -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
+    <!-- Galeria: Android 12 e anteriores -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32"/>
     <application
-        android:label="comictrack"
+        android:label="ComicTrack"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
