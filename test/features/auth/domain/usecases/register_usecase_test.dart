@@ -5,7 +5,7 @@ import 'package:comictrack/core/error/failures.dart';
 import 'package:comictrack/features/auth/domain/entities/app_user.dart';
 import 'package:comictrack/features/auth/domain/usecases/register_usecase.dart';
 
-import '../../../helpers/mock_auth_repository.dart';
+import '../../../../helpers/mock_auth_repository.dart';
 
 void main() {
   late MockAuthRepository repository;
