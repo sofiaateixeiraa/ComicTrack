@@ -57,7 +57,7 @@ void main() {
         () => repository.updatePhoto(any(), any()),
       ).thenAnswer((_) async => const Right(unit));
 
-      final invalidBytes = Uint8List.fromList([1, 2, 3, 4, 5]);
+      final invalidBytes = Uint8List.fromList(List.filled(10, 0));
       final result = await usecase(uid: 'u1', imageBytes: invalidBytes);
 
       // comportamento atual: ImageCompressor devolve os bytes originais em vez
