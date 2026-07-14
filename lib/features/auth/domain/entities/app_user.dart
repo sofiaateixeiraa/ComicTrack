@@ -7,5 +7,8 @@ abstract class AppUser with _$AppUser {
     required String uid,
     required String email,
     String? displayName,
+    // false para contas só com login google.
+    @Default(false) bool hasPasswordProvider,
+    @Default(false) bool emailVerified,
   }) = _AppUser;
 }

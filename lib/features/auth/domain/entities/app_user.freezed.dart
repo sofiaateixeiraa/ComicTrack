@@ -14,7 +14,8 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AppUser {
 
- String get uid; String get email; String? get displayName;
+ String get uid; String get email; String? get displayName;// false para contas só com login google.
+ bool get hasPasswordProvider; bool get emailVerified;
 /// Create a copy of AppUser
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +26,16 @@ $AppUserCopyWith<AppUser> get copyWith => _$AppUserCopyWithImpl<AppUser>(this as
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppUser&&(identical(other.uid, uid) || other.uid == uid)&&(identical(other.email, email) || other.email == email)&&(identical(other.displayName, displayName) || other.displayName == displayName));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppUser&&(identical(other.uid, uid) || other.uid == uid)&&(identical(other.email, email) || other.email == email)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.hasPasswordProvider, hasPasswordProvider) || other.hasPasswordProvider == hasPasswordProvider)&&(identical(other.emailVerified, emailVerified) || other.emailVerified == emailVerified));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,uid,email,displayName);
+int get hashCode => Object.hash(runtimeType,uid,email,displayName,hasPasswordProvider,emailVerified);
 
 @override
 String toString() {
-  return 'AppUser(uid: $uid, email: $email, displayName: $displayName)';
+  return 'AppUser(uid: $uid, email: $email, displayName: $displayName, hasPasswordProvider: $hasPasswordProvider, emailVerified: $emailVerified)';
 }
 
 
@@ -45,7 +46,7 @@ abstract mixin class $AppUserCopyWith<$Res>  {
   factory $AppUserCopyWith(AppUser value, $Res Function(AppUser) _then) = _$AppUserCopyWithImpl;
 @useResult
 $Res call({
- String uid, String email, String? displayName
+ String uid, String email, String? displayName, bool hasPasswordProvider, bool emailVerified
 });
 
 
@@ -62,12 +63,14 @@ class _$AppUserCopyWithImpl<$Res>
 
 /// Create a copy of AppUser
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? uid = null,Object? email = null,Object? displayName = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? uid = null,Object? email = null,Object? displayName = freezed,Object? hasPasswordProvider = null,Object? emailVerified = null,}) {
   return _then(_self.copyWith(
 uid: null == uid ? _self.uid : uid // ignore: cast_nullable_to_non_nullable
 as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String,displayName: freezed == displayName ? _self.displayName : displayName // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,hasPasswordProvider: null == hasPasswordProvider ? _self.hasPasswordProvider : hasPasswordProvider // ignore: cast_nullable_to_non_nullable
+as bool,emailVerified: null == emailVerified ? _self.emailVerified : emailVerified // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 
@@ -152,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String uid,  String email,  String? displayName)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String uid,  String email,  String? displayName,  bool hasPasswordProvider,  bool emailVerified)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AppUser() when $default != null:
-return $default(_that.uid,_that.email,_that.displayName);case _:
+return $default(_that.uid,_that.email,_that.displayName,_that.hasPasswordProvider,_that.emailVerified);case _:
   return orElse();
 
 }
@@ -173,10 +176,10 @@ return $default(_that.uid,_that.email,_that.displayName);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String uid,  String email,  String? displayName)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String uid,  String email,  String? displayName,  bool hasPasswordProvider,  bool emailVerified)  $default,) {final _that = this;
 switch (_that) {
 case _AppUser():
-return $default(_that.uid,_that.email,_that.displayName);case _:
+return $default(_that.uid,_that.email,_that.displayName,_that.hasPasswordProvider,_that.emailVerified);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -193,10 +196,10 @@ return $default(_that.uid,_that.email,_that.displayName);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String uid,  String email,  String? displayName)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String uid,  String email,  String? displayName,  bool hasPasswordProvider,  bool emailVerified)?  $default,) {final _that = this;
 switch (_that) {
 case _AppUser() when $default != null:
-return $default(_that.uid,_that.email,_that.displayName);case _:
+return $default(_that.uid,_that.email,_that.displayName,_that.hasPasswordProvider,_that.emailVerified);case _:
   return null;
 
 }
@@ -208,12 +211,15 @@ return $default(_that.uid,_that.email,_that.displayName);case _:
 
 
 class _AppUser implements AppUser {
-  const _AppUser({required this.uid, required this.email, this.displayName});
+  const _AppUser({required this.uid, required this.email, this.displayName, this.hasPasswordProvider = false, this.emailVerified = false});
   
 
 @override final  String uid;
 @override final  String email;
 @override final  String? displayName;
+// false para contas só com login google.
+@override@JsonKey() final  bool hasPasswordProvider;
+@override@JsonKey() final  bool emailVerified;
 
 /// Create a copy of AppUser
 /// with the given fields replaced by the non-null parameter values.
@@ -225,16 +231,16 @@ _$AppUserCopyWith<_AppUser> get copyWith => __$AppUserCopyWithImpl<_AppUser>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AppUser&&(identical(other.uid, uid) || other.uid == uid)&&(identical(other.email, email) || other.email == email)&&(identical(other.displayName, displayName) || other.displayName == displayName));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AppUser&&(identical(other.uid, uid) || other.uid == uid)&&(identical(other.email, email) || other.email == email)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.hasPasswordProvider, hasPasswordProvider) || other.hasPasswordProvider == hasPasswordProvider)&&(identical(other.emailVerified, emailVerified) || other.emailVerified == emailVerified));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,uid,email,displayName);
+int get hashCode => Object.hash(runtimeType,uid,email,displayName,hasPasswordProvider,emailVerified);
 
 @override
 String toString() {
-  return 'AppUser(uid: $uid, email: $email, displayName: $displayName)';
+  return 'AppUser(uid: $uid, email: $email, displayName: $displayName, hasPasswordProvider: $hasPasswordProvider, emailVerified: $emailVerified)';
 }
 
 
@@ -245,7 +251,7 @@ abstract mixin class _$AppUserCopyWith<$Res> implements $AppUserCopyWith<$Res> {
   factory _$AppUserCopyWith(_AppUser value, $Res Function(_AppUser) _then) = __$AppUserCopyWithImpl;
 @override @useResult
 $Res call({
- String uid, String email, String? displayName
+ String uid, String email, String? displayName, bool hasPasswordProvider, bool emailVerified
 });
 
 
@@ -262,12 +268,14 @@ class __$AppUserCopyWithImpl<$Res>
 
 /// Create a copy of AppUser
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? uid = null,Object? email = null,Object? displayName = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? uid = null,Object? email = null,Object? displayName = freezed,Object? hasPasswordProvider = null,Object? emailVerified = null,}) {
   return _then(_AppUser(
 uid: null == uid ? _self.uid : uid // ignore: cast_nullable_to_non_nullable
 as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String,displayName: freezed == displayName ? _self.displayName : displayName // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,hasPasswordProvider: null == hasPasswordProvider ? _self.hasPasswordProvider : hasPasswordProvider // ignore: cast_nullable_to_non_nullable
+as bool,emailVerified: null == emailVerified ? _self.emailVerified : emailVerified // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 
