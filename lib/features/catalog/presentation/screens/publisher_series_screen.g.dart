@@ -85,7 +85,7 @@ final class PublisherSeriesProvider
   }
 }
 
-String _$publisherSeriesHash() => r'9e5116bf45a33046dcc9328ea57c977d0465ce28';
+String _$publisherSeriesHash() => r'e866180bfdff2662218dae0759b3aff9f812d38b';
 
 final class PublisherSeriesFamily extends $Family
     with

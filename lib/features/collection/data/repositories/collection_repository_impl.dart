@@ -10,21 +10,22 @@ class CollectionRepositoryImpl implements CollectionRepository {
 
   @override
   Stream<Either<Failure, List<ComicCollectionEntry>>> watchUserCollection(
-      String userId) =>
-      _dataSource.watchCollection(userId);
+    String userId,
+  ) => _dataSource.watchCollection(userId);
 
   @override
   Future<Either<Failure, ComicCollectionEntry?>> getEntry(
-      String userId, String issueId) =>
-      _dataSource.getEntry(userId, issueId);
+    String userId,
+    String issueId,
+  ) => _dataSource.getEntry(userId, issueId);
 
   @override
   Future<Either<Failure, Unit>> saveEntry(
-      String userId, ComicCollectionEntry entry) =>
-      _dataSource.saveEntry(userId, entry);
+    String userId,
+    ComicCollectionEntry entry,
+  ) => _dataSource.saveEntry(userId, entry);
 
   @override
-  Future<Either<Failure, Unit>> deleteEntry(
-      String userId, String issueId) =>
+  Future<Either<Failure, Unit>> deleteEntry(String userId, String issueId) =>
       _dataSource.deleteEntry(userId, issueId);
 }

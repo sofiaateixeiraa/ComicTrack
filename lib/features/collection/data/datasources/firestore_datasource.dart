@@ -6,23 +6,32 @@ import '../../domain/entities/ownership_status.dart';
 import '../../domain/entities/reading_status.dart';
 
 abstract interface class CollectionDataSource {
-  Stream<Either<Failure, List<ComicCollectionEntry>>> watchCollection(String userId);
-  Future<Either<Failure, ComicCollectionEntry?>> getEntry(String userId, String issueId);
-  Future<Either<Failure, Unit>> saveEntry(String userId, ComicCollectionEntry entry);
+  Stream<Either<Failure, List<ComicCollectionEntry>>> watchCollection(
+    String userId,
+  );
+  Future<Either<Failure, ComicCollectionEntry?>> getEntry(
+    String userId,
+    String issueId,
+  );
+  Future<Either<Failure, Unit>> saveEntry(
+    String userId,
+    ComicCollectionEntry entry,
+  );
   Future<Either<Failure, Unit>> deleteEntry(String userId, String issueId);
 }
 
 class FirestoreCollectionDataSource implements CollectionDataSource {
   final FirebaseFirestore _firestore;
   FirestoreCollectionDataSource({FirebaseFirestore? firestore})
-      : _firestore = firestore ?? FirebaseFirestore.instance;
+    : _firestore = firestore ?? FirebaseFirestore.instance;
 
   CollectionReference<Map<String, dynamic>> _collectionRef(String userId) =>
       _firestore.collection('users').doc(userId).collection('collection');
 
   @override
   Stream<Either<Failure, List<ComicCollectionEntry>>> watchCollection(
-      String userId) {
+    String userId,
+  ) {
     return _collectionRef(userId).snapshots().map((snapshot) {
       try {
         final entries = snapshot.docs
@@ -37,7 +46,9 @@ class FirestoreCollectionDataSource implements CollectionDataSource {
 
   @override
   Future<Either<Failure, ComicCollectionEntry?>> getEntry(
-      String userId, String issueId) async {
+    String userId,
+    String issueId,
+  ) async {
     try {
       final doc = await _collectionRef(userId).doc(issueId).get();
       if (!doc.exists || doc.data() == null) return const Right(null);
@@ -49,12 +60,13 @@ class FirestoreCollectionDataSource implements CollectionDataSource {
 
   @override
   Future<Either<Failure, Unit>> saveEntry(
-      String userId, ComicCollectionEntry entry) async {
+    String userId,
+    ComicCollectionEntry entry,
+  ) async {
     try {
-      await _collectionRef(userId).doc(entry.issueId).set(
-        _toFirestore(entry),
-        SetOptions(merge: true),
-      );
+      await _collectionRef(
+        userId,
+      ).doc(entry.issueId).set(_toFirestore(entry), SetOptions(merge: true));
       return const Right(unit);
     } catch (e) {
       return Left(Failure.repository(message: e.toString()));
@@ -63,7 +75,9 @@ class FirestoreCollectionDataSource implements CollectionDataSource {
 
   @override
   Future<Either<Failure, Unit>> deleteEntry(
-      String userId, String issueId) async {
+    String userId,
+    String issueId,
+  ) async {
     try {
       await _collectionRef(userId).doc(issueId).delete();
       return const Right(unit);
@@ -72,18 +86,16 @@ class FirestoreCollectionDataSource implements CollectionDataSource {
     }
   }
 
-  // --- Serialização ---
-
   Map<String, dynamic> _toFirestore(ComicCollectionEntry entry) => {
-        'issueId': entry.issueId,
-        'seriesName': entry.seriesName,
-        'issueNumber': entry.issueNumber,
-        'coverUrl': entry.coverUrl,
-        'ownershipStatus': entry.ownershipStatus.name,
-        'readingStatus': entry.readingStatus?.name,
-        'isFavorite': entry.isFavorite,
-        'updatedAt': FieldValue.serverTimestamp(),
-      };
+    'issueId': entry.issueId,
+    'seriesName': entry.seriesName,
+    'issueNumber': entry.issueNumber,
+    'coverUrl': entry.coverUrl,
+    'ownershipStatus': entry.ownershipStatus.name,
+    'readingStatus': entry.readingStatus?.name,
+    'isFavorite': entry.isFavorite,
+    'updatedAt': FieldValue.serverTimestamp(),
+  };
 
   ComicCollectionEntry _fromFirestore(Map<String, dynamic> data) =>
       ComicCollectionEntry(

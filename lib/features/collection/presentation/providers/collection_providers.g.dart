@@ -248,12 +248,12 @@ final class RemoveFromCollectionProvider
 String _$removeFromCollectionHash() =>
     r'50872a86c63e69d08ed7cb7f5206a7240b3ed465';
 
-/// Stream de toda a coleção do utilizador atual.
+/// stream de toda a coleção do utilizador atual.
 
 @ProviderFor(userCollection)
 final userCollectionProvider = UserCollectionProvider._();
 
-/// Stream de toda a coleção do utilizador atual.
+/// stream de toda a coleção do utilizador atual.
 
 final class UserCollectionProvider
     extends
@@ -265,7 +265,7 @@ final class UserCollectionProvider
     with
         $FutureModifier<Either<Failure, List<ComicCollectionEntry>>>,
         $StreamProvider<Either<Failure, List<ComicCollectionEntry>>> {
-  /// Stream de toda a coleção do utilizador atual.
+  /// stream de toda a coleção do utilizador atual.
   UserCollectionProvider._()
     : super(
         from: null,
@@ -293,12 +293,12 @@ final class UserCollectionProvider
 
 String _$userCollectionHash() => r'e5b299036b02411e546089cc02f0fc3f8d378fe8';
 
-/// Entrada individual de um issue na coleção (null = não está na coleção).
+/// entrada individual de um issue na coleção.
 
 @ProviderFor(collectionEntry)
 final collectionEntryProvider = CollectionEntryFamily._();
 
-/// Entrada individual de um issue na coleção (null = não está na coleção).
+/// entrada individual de um issue na coleção.
 
 final class CollectionEntryProvider
     extends
@@ -310,7 +310,7 @@ final class CollectionEntryProvider
     with
         $FutureModifier<ComicCollectionEntry?>,
         $FutureProvider<ComicCollectionEntry?> {
-  /// Entrada individual de um issue na coleção (null = não está na coleção).
+  /// entrada individual de um issue na coleção.
   CollectionEntryProvider._({
     required CollectionEntryFamily super.from,
     required String super.argument,
@@ -357,7 +357,7 @@ final class CollectionEntryProvider
 
 String _$collectionEntryHash() => r'95f0ce19ca425efd163000483b8413258ec8e54f';
 
-/// Entrada individual de um issue na coleção (null = não está na coleção).
+/// entrada individual de um issue na coleção.
 
 final class CollectionEntryFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<ComicCollectionEntry?>, String> {
@@ -370,7 +370,7 @@ final class CollectionEntryFamily extends $Family
         isAutoDispose: true,
       );
 
-  /// Entrada individual de um issue na coleção (null = não está na coleção).
+  /// entrada individual de um issue na coleção.
 
   CollectionEntryProvider call(String issueId) =>
       CollectionEntryProvider._(argument: issueId, from: this);

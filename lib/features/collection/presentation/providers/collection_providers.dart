@@ -14,13 +14,9 @@ import '../../domain/usecases/watch_user_collection_usecase.dart';
 import '../../domain/usecases/get_collection_entry_usecase.dart';
 part 'collection_providers.g.dart';
 
-// --- Infra ---
-
 @riverpod
 CollectionRepository collectionRepository(Ref ref) =>
     CollectionRepositoryImpl(FirestoreCollectionDataSource());
-
-// --- Use cases ---
 
 @riverpod
 UpdateOwnershipStatusUseCase updateOwnershipStatus(Ref ref) =>
@@ -38,25 +34,25 @@ ToggleFavoriteUseCase toggleFavorite(Ref ref) =>
 RemoveFromCollectionUseCase removeFromCollection(Ref ref) =>
     RemoveFromCollectionUseCase(ref.watch(collectionRepositoryProvider));
 
-// --- Estado da coleção (stream reativo) ---
-
-/// Stream de toda a coleção do utilizador atual.
+/// stream de toda a coleção do utilizador atual.
 @riverpod
-Stream<Either<Failure, List<ComicCollectionEntry>>> userCollection(
-    Ref ref) {
+Stream<Either<Failure, List<ComicCollectionEntry>>> userCollection(Ref ref) {
   final user = ref.watch(currentUserProvider);
   if (user == null) return Stream.value(const Right([]));
-  final useCase = WatchUserCollectionUseCase(ref.watch(collectionRepositoryProvider));
+  final useCase = WatchUserCollectionUseCase(
+    ref.watch(collectionRepositoryProvider),
+  );
   return useCase(user.uid);
 }
 
-/// Entrada individual de um issue na coleção (null = não está na coleção).
+/// entrada individual de um issue na coleção.
 @riverpod
-Future<ComicCollectionEntry?> collectionEntry(
-    Ref ref, String issueId) async {
+Future<ComicCollectionEntry?> collectionEntry(Ref ref, String issueId) async {
   final user = ref.watch(currentUserProvider);
   if (user == null) return null;
-  final useCase = GetCollectionEntryUseCase(ref.watch(collectionRepositoryProvider));
+  final useCase = GetCollectionEntryUseCase(
+    ref.watch(collectionRepositoryProvider),
+  );
   final result = await useCase(userId: user.uid, issueId: issueId);
   return result.fold((_) => null, (entry) => entry);
 }

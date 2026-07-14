@@ -22,21 +22,19 @@ class CatalogRepositoryImpl implements CatalogRepository {
     String? nameFilter,
     String sort = 'name',
     String? nextUrl,
-  }) =>
-      _dataSource.getSeriesByPublisher(
-        publisherId,
-        publisherName: publisherName,
-        nameFilter: nameFilter,
-        sort: sort,
-        nextUrl: nextUrl,
-      );
+  }) => _dataSource.getSeriesByPublisher(
+    publisherId,
+    publisherName: publisherName,
+    nameFilter: nameFilter,
+    sort: sort,
+    nextUrl: nextUrl,
+  );
 
   @override
   Future<Either<Failure, PaginatedResult<Series>>> searchSeries(
     String query, {
     String? nextUrl,
-  }) =>
-      _dataSource.searchSeries(query, nextUrl: nextUrl);
+  }) => _dataSource.searchSeries(query, nextUrl: nextUrl);
 
   @override
   Future<Either<Failure, Series>> getSeriesDetail(String seriesId) =>
@@ -46,8 +44,7 @@ class CatalogRepositoryImpl implements CatalogRepository {
   Future<Either<Failure, PaginatedResult<Issue>>> getIssuesBySeries(
     String seriesId, {
     String? nextUrl,
-  }) =>
-      _dataSource.getIssuesBySeries(seriesId, nextUrl: nextUrl);
+  }) => _dataSource.getIssuesBySeries(seriesId, nextUrl: nextUrl);
 
   @override
   Future<Either<Failure, Issue>> getIssueDetail(String issueId) =>

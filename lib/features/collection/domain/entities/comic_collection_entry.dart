@@ -4,7 +4,6 @@ import 'reading_status.dart';
 part 'comic_collection_entry.freezed.dart';
 
 /// representa o estado de um issue na coleção do utilizador.
-/// implementa as regras de negócio do domínio através dos getters de validação.
 @freezed
 abstract class ComicCollectionEntry with _$ComicCollectionEntry {
   const ComicCollectionEntry._(); // necessário para métodos personalizados.

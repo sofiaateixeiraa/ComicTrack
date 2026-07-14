@@ -55,7 +55,8 @@ class SeriesDto {
     this.publisher,
   });
 
-  factory SeriesDto.fromJson(Map<String, dynamic> json) => _$SeriesDtoFromJson(json);
+  factory SeriesDto.fromJson(Map<String, dynamic> json) =>
+      _$SeriesDtoFromJson(json);
 
   Series toDomain() => Series(
     id: id.toString(),
