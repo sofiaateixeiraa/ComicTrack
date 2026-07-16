@@ -9,30 +9,65 @@ import '../widgets/series_cover_placeholder.dart';
 part 'publisher_series_screen.g.dart';
 
 @riverpod
-Future<PaginatedResult<Series>> publisherSeries(
-  Ref ref, {
-  required String publisherId,
-  required String publisherName,
-  String? nameFilter,
-  String sort = 'name',
-}) async {
-  final result = await ref
-      .watch(getSeriesByPublisherUseCaseProvider)
-      .call(
-        publisherId: publisherId,
-        publisherName: publisherName,
-        nameFilter: nameFilter,
-        sort: sort,
-      );
-  return result.fold(
-    (f) => throw f,
-    (r) => PaginatedResult<Series>(
-      items: _sortSeries(r.items, sort),
-      total: r.total,
-      nextUrl: r.nextUrl,
-      previousUrl: r.previousUrl,
-    ),
-  );
+class PublisherSeries extends _$PublisherSeries {
+  bool _isFetchingMore = false;
+
+  @override
+  Future<PaginatedResult<Series>> build({
+    required String publisherId,
+    required String publisherName,
+    String? nameFilter,
+    String sort = 'name',
+  }) async {
+    final result = await ref
+        .watch(getSeriesByPublisherUseCaseProvider)
+        .call(
+          publisherId: publisherId,
+          publisherName: publisherName,
+          nameFilter: nameFilter,
+          sort: sort,
+        );
+    return result.fold(
+      (f) => throw f,
+      (r) => PaginatedResult<Series>(
+        items: _sortSeries(r.items, sort),
+        total: r.total,
+        nextUrl: r.nextUrl,
+        previousUrl: r.previousUrl,
+      ),
+    );
+  }
+
+  /// busca a página seguinte (dada por `nextUrl`) e acrescenta à lista atual.
+  Future<void> loadMore() async {
+    final current = state.value;
+    if (current == null || current.nextUrl == null || _isFetchingMore) return;
+
+    _isFetchingMore = true;
+    try {
+      final result = await ref
+          .read(getSeriesByPublisherUseCaseProvider)
+          .call(
+            publisherId: publisherId,
+            publisherName: publisherName,
+            nameFilter: nameFilter,
+            sort: sort,
+            nextUrl: current.nextUrl,
+          );
+      result.fold((f) => throw f, (r) {
+        state = AsyncData(
+          PaginatedResult<Series>(
+            items: _sortSeries([...current.items, ...r.items], sort),
+            total: r.total,
+            nextUrl: r.nextUrl,
+            previousUrl: r.previousUrl,
+          ),
+        );
+      });
+    } finally {
+      _isFetchingMore = false;
+    }
+  }
 }
 
 List<Series> _sortSeries(List<Series> series, String sort) {
@@ -89,12 +124,42 @@ class _PublisherSeriesScreenState extends ConsumerState<PublisherSeriesScreen> {
   final _listScrollController = ScrollController();
   String _filter = '';
   String _sort = 'name';
+  bool _loadingMore = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _listScrollController.addListener(_onScroll);
+  }
 
   @override
   void dispose() {
+    _listScrollController.removeListener(_onScroll);
     _ctrl.dispose();
     _listScrollController.dispose();
     super.dispose();
+  }
+
+  void _onScroll() {
+    if (_loadingMore || !_listScrollController.hasClients) return;
+    final position = _listScrollController.position;
+    if (position.pixels < position.maxScrollExtent - 300) return;
+    _loadMore();
+  }
+
+  Future<void> _loadMore() async {
+    setState(() => _loadingMore = true);
+    await ref
+        .read(
+          publisherSeriesProvider(
+            publisherId: widget.publisherId,
+            publisherName: widget.publisherName,
+            nameFilter: _filter.isEmpty ? null : _filter,
+            sort: _sort,
+          ).notifier,
+        )
+        .loadMore();
+    if (mounted) setState(() => _loadingMore = false);
   }
 
   @override
@@ -142,11 +207,24 @@ class _PublisherSeriesScreenState extends ConsumerState<PublisherSeriesScreen> {
           Expanded(
             child: seriesAsync.when(
               data: (result) {
+                final showFooter = result.nextUrl != null;
                 return ListView.builder(
                   controller: _listScrollController,
                   padding: const EdgeInsets.only(left: 16, right: 16),
-                  itemCount: result.items.length,
+                  itemCount: result.items.length + (showFooter ? 1 : 0),
                   itemBuilder: (_, i) {
+                    if (i >= result.items.length) {
+                      return const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 16),
+                        child: Center(
+                          child: SizedBox(
+                            width: 24,
+                            height: 24,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          ),
+                        ),
+                      );
+                    }
                     final series = result.items[i];
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 10),

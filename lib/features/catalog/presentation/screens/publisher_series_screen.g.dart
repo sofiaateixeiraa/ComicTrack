@@ -9,19 +9,11 @@ part of 'publisher_series_screen.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(publisherSeries)
+@ProviderFor(PublisherSeries)
 final publisherSeriesProvider = PublisherSeriesFamily._();
 
 final class PublisherSeriesProvider
-    extends
-        $FunctionalProvider<
-          AsyncValue<PaginatedResult<Series>>,
-          PaginatedResult<Series>,
-          FutureOr<PaginatedResult<Series>>
-        >
-    with
-        $FutureModifier<PaginatedResult<Series>>,
-        $FutureProvider<PaginatedResult<Series>> {
+    extends $AsyncNotifierProvider<PublisherSeries, PaginatedResult<Series>> {
   PublisherSeriesProvider._({
     required PublisherSeriesFamily super.from,
     required ({
@@ -51,28 +43,7 @@ final class PublisherSeriesProvider
 
   @$internal
   @override
-  $FutureProviderElement<PaginatedResult<Series>> $createElement(
-    $ProviderPointer pointer,
-  ) => $FutureProviderElement(pointer);
-
-  @override
-  FutureOr<PaginatedResult<Series>> create(Ref ref) {
-    final argument =
-        this.argument
-            as ({
-              String publisherId,
-              String publisherName,
-              String? nameFilter,
-              String sort,
-            });
-    return publisherSeries(
-      ref,
-      publisherId: argument.publisherId,
-      publisherName: argument.publisherName,
-      nameFilter: argument.nameFilter,
-      sort: argument.sort,
-    );
-  }
+  PublisherSeries create() => PublisherSeries();
 
   @override
   bool operator ==(Object other) {
@@ -85,11 +56,14 @@ final class PublisherSeriesProvider
   }
 }
 
-String _$publisherSeriesHash() => r'e866180bfdff2662218dae0759b3aff9f812d38b';
+String _$publisherSeriesHash() => r'72796a21e874071c3eafee351114229d60b29c76';
 
 final class PublisherSeriesFamily extends $Family
     with
-        $FunctionalFamilyOverride<
+        $ClassFamilyOverride<
+          PublisherSeries,
+          AsyncValue<PaginatedResult<Series>>,
+          PaginatedResult<Series>,
           FutureOr<PaginatedResult<Series>>,
           ({
             String publisherId,
@@ -124,4 +98,57 @@ final class PublisherSeriesFamily extends $Family
 
   @override
   String toString() => r'publisherSeriesProvider';
+}
+
+abstract class _$PublisherSeries
+    extends $AsyncNotifier<PaginatedResult<Series>> {
+  late final _$args =
+      ref.$arg
+          as ({
+            String publisherId,
+            String publisherName,
+            String? nameFilter,
+            String sort,
+          });
+  String get publisherId => _$args.publisherId;
+  String get publisherName => _$args.publisherName;
+  String? get nameFilter => _$args.nameFilter;
+  String get sort => _$args.sort;
+
+  FutureOr<PaginatedResult<Series>> build({
+    required String publisherId,
+    required String publisherName,
+    String? nameFilter,
+    String sort = 'name',
+  });
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final ref =
+        this.ref
+            as $Ref<
+              AsyncValue<PaginatedResult<Series>>,
+              PaginatedResult<Series>
+            >;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<
+                AsyncValue<PaginatedResult<Series>>,
+                PaginatedResult<Series>
+              >,
+              AsyncValue<PaginatedResult<Series>>,
+              Object?,
+              Object?
+            >;
+    element.handleCreate(
+      ref,
+      () => build(
+        publisherId: _$args.publisherId,
+        publisherName: _$args.publisherName,
+        nameFilter: _$args.nameFilter,
+        sort: _$args.sort,
+      ),
+    );
+  }
 }
