@@ -225,6 +225,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       if (_physicalFilter != null && e.readingStatus != _physicalFilter) {
         return false;
       }
+      if (_searchQuery.isNotEmpty &&
+          !e.seriesName.toLowerCase().contains(_searchQuery)) {
+        return false;
+      }
       return true;
     }).toList();
 
@@ -260,6 +264,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         return false;
       }
       if (_favOwnerFilter != null && e.ownershipStatus != _favOwnerFilter) {
+        return false;
+      }
+      if (_searchQuery.isNotEmpty &&
+          !e.seriesName.toLowerCase().contains(_searchQuery)) {
         return false;
       }
       return true;
