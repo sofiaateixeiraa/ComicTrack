@@ -12,6 +12,10 @@
   <img src="https://img.shields.io/badge/Firebase-FFCA28?logo=firebase&logoColor=black" alt="Firebase" />
 </p>
 
+<p align="center">
+<img src="https://img.shields.io/badge/license-All%20Rights%20Reserved-red" alt="License" />
+</p>
+
 > Final project for the *Mobile Applications Project* course unit of the Software Development CTeSP at ISTEC Porto (academic year 2025/2026). Developed as a group project. Unofficial, non-commercial fan work, not affiliated with Metron or any comic publisher (see [Disclaimer](#disclaimer)).
 
 ## Screenshots

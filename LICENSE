@@ -1,0 +1,26 @@
+Copyright (c) 2026 Sofia Teixeira, Gonçalo Pereira, Guilherme Teixeira
+
+All rights reserved.
+
+This source code was written for a course assignment (Projeto de Aplicações
+Móveis, CTeSP Desenvolvimento de Software, ISTEC) and is made publicly visible
+for viewing purposes only. No permission is granted to copy, modify, merge,
+publish, distribute, sublicense, or sell copies of the code, in whole or in
+part, without the prior written permission of the authors.
+
+Excluded from this license:
+
+- The ComicTrack logo (assets/brand/logo.png) was created by Sofia Teixeira
+  and is not licensed for any use without her permission.
+- Comic data obtained from the Metron Comic Book Database remains under its
+  own license (CC BY-SA 4.0), (c) Metron Project, except where noted otherwise.
+- Cover images, names, characters, and trademarks belong to their respective
+  owners and are not covered by this license.
+- Third-party packages listed in pubspec.yaml remain under their own licenses.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
