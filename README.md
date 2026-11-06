@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="assets/brand/logo.png" alt="ComicTrack" width="320" />
+  <img src="assets/brand/logo.png" alt="ComicTrack" width="300" />
 </h1>
 
 <p align="center">
@@ -12,7 +12,7 @@
   <img src="https://img.shields.io/badge/Firebase-FFCA28?logo=firebase&logoColor=black" alt="Firebase" />
 </p>
 
-> Final project for the *Mobile Applications Project* course unit of the Software Development CTeSP at ISTEC Porto (academic year 2025/2026). Developed as a group project.
+> Final project for the *Mobile Applications Project* course unit of the Software Development CTeSP at ISTEC Porto (academic year 2025/2026). Developed as a group project. Unofficial, non-commercial fan work, not affiliated with Metron or any comic publisher (see [Disclaimer](#disclaimer)).
 
 ## Screenshots
 
@@ -121,4 +121,13 @@ flutter test
 
 ## Acknowledgements
 
-Comic data provided by the [Metron Comic Book Database](https://metron.cloud/).
+- Comic data from the [Metron Comic Book Database](https://metron.cloud/), © Metron Project, licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) except where noted otherwise. The data is fetched through the Metron API and may be cached locally and in Cloud Firestore.
+- [Flutter](https://flutter.dev/), [Firebase](https://firebase.google.com/), and the open-source packages listed in `pubspec.yaml`.
+
+## License
+
+The source code of this project was written for a course assignment; all rights reserved by the authors. The ComicTrack logo (`assets/brand/logo.png`) was created by Sofia Teixeira. Comic data from Metron remains under its own license ([CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)). Cover images, names, characters, and trademarks belong to their respective owners and are not covered by that license or by this project's license.
+
+## Disclaimer
+
+ComicTrack is an unofficial, non-commercial project made for educational purposes only. It is not affiliated with, sponsored by, or endorsed by Metron, Marvel, DC Comics, or any other publisher. All comic titles, characters, logos, and cover art shown in the app and in the screenshots are trademarks and/or copyrighted works of their respective owners.
